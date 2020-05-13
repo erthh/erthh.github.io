@@ -2206,11 +2206,11 @@ button,
   display: flex;
 }
 .footerdiv2{
-  width: 50%;
+  width: 30%;
   padding-top: 12px;
 }
 .footerdiv3{
-  width: 50%;
+  width: 70%;
   text-align: right;
   padding-top: 12px
 }
