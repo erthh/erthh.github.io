@@ -33,10 +33,67 @@
 										<h1>Early Sepsis prediction with machine learning model</h1>
 									</header>
 									<span class="image main"><img src="images/pic11.jpg" alt="" /></span>
-									<h2>Story under construction</h2>
+									<h2>Introduction</h2>
+									<p>The Early sepsis predictor project is one of my Master’s degree thesis group project. 
+										The objective of this project is to build a predictive model that will predict sepsis 6 hours before its onset in order for 
+										death-related cases to be significantly reduced. The outcome of the model could help physicians to prepare a proper treatment for 
+										ICU patients on time and reduce the mortality rate.</p>
 
+									<p>This project consists of 2 main parts. The first part is Model training that include Data wrangling, Data exploration, 
+										Data Cleaning, Missing value imputation, Feature Engineering, Model training 
+										with 4 algorithm (Logistic Regression, Decision Tree, Random Forest, XGBoost), and model evaluation. </p>
+									
+									<h2>Model training</h2>
+									<h3>Dataset</h3>
+									<p>
+										The Dataset we used is from the <a href="https://physionet.org/content/challenge-2019/1.0.0/">physionet challenge in 2019</a>
+										This dataset consist of over 100+ features but what we focused are time sensitive features so we used vital signs, 
+										laboratory, and demographics values of 40 time-dependent variables with over 40,000 patients. After we labeled sepsis for each patients in data. The first problem we found is the classes label are imbalanced, only about 2% of the patterns result in sepsis. 
+									</p>
+
+									<div> 
+										<span><img src="images/sepsis/imbalance.png" alt="" /></span>
+									</div> 
+
+									<h3>Missing value imputation</h3>
+									<p>
+										For this project, the last observation carried forward (LOCF) and the next observation carried backward (NOCB) mechanisms are used to fill in missing values. LOCF and NOCB are two of the most popular methods in clinical trials, because they induce less bias to datasets compared to mean or median imputation.
+									</p>
+
+									<h3>Models training </h3>
+									<p>
+										Four algorithms are used to train different models, including Logistic Regression, Decision Tree, Random Forest, and Extreme Gradient Boosting (XGBoost). Each model is trained with all feaures and with feature selection. The model with the best performance on the test dataset is used as the model for implementation for a web application. 
+									</p>
+
+									<h3>Models evaluation</h3>
+									<p>
+										All models were trained using a 10-fold cross-validation method that validated the results achieved by the models. XGBoost with feature selection trained at 98:02 class distribution outperformed other models with an F1 score of 0.81, Kappa of 0.69, AUROC of 0.94, and no false positives on the test dataset.
+									</p>
+									<div> 
+										<span><img src="images/sepsis/multiple_roc_curve.png" alt="" /></span>
+									</div> 
+
+									<p>All the detailed explanation and source code are in this <a href="https://github.com/antranttu/early-sepsis-predictor">GitHub repository.</a> </p>
+
+									<h2>Web dashboard application</h2>
+									<div> 
+										<span><img src="images/sepsis/interface1.png" alt="" /></span>
+									</div> 
+									<p>
+										The last part is building a web dashboard application that implemented the finalized model to an actual concrete application and deploy to production server. 
+									</p>
+									<div> 
+										<span><img src="images/sepsis/interface2.png" alt="" /></span>
+									</div> 
+									<p>
+										At first, I was using Python Flask as a web development tool to develop this project but later I’ve found DASH by plotly which is quite similar to Flask because It’s 100% python. So the advantage of DASH by plotly is, It actually a web framework that built on top of python flask, Basically DASH by plotly environment is quite similar to Flask but It particularly designed for the web dashboard development. It has built in html and chart components ready to use, That helped me a lot to develop this project in a short period of time. 
+									</p>
+									<p>All Web app source code are in this <a href="https://github.com/erthh/sepsis-prediction">Github repository</a></p>
+									
 									<p><b> App Demo : </b> <a href="https://sepsis699b.herokuapp.com/">Early sepsis prediction with machine learning model</a> </p> 
-									<p><b> Github : </b> <a href="https://github.com/erthh/sepsis-prediction">Github Repo</a> </p> 
+									<p><b> Github : </b> <a href="https://github.com/antranttu/early-sepsis-predictor">Model training</a> </p> 
+									<p><b> Github : </b> <a href="https://github.com/erthh/sepsis-prediction">Web dashboard application</a> </p> 
+									
 									<hr class="major" />
 								</section>
 								<footer class="footerFix">
