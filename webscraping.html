@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Web Scraping on dynamic website(CSR) with python and selenium</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+							<header id="header">
+								<a href="index.html" class="logo"><strong>Krittin Jaratmanachot</strong></a>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/kjaratmanachot/" class="icon brands fa-linkedin-in"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/erthh" class="icon brands fa-github"><span class="label">Github</span></a></li>
+										<li><a href="https://medium.com/@erthh" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+										<li><a href="https://www.instagram.com/erthh/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="https://www.flickr.com/photos/131891071@N05/" class="icon brands fa-flickr"><span class="label">Flickr</span></a></li>
+								</ul>
+							</header>
+
+							<!-- Content -->
+								<section>
+									<header class="main">
+										<h1>Web Scraping on dynamic website(CSR) with python and selenium</h1>
+									</header>
+									<span class="image main"><img src="images/webscrap/webscrap.jpg" alt="" /></span>
+									<h2>Introduction</h2>
+									<p>There are many ways for web scraping nowadays whether with Javascript(which I think is the easiest one) or other programming languages. In this article, I will focus on Python because you know this is the age of Data Science and Data scientist love Python also I’m recently obsessed with Data analyst field.</p>
+
+									<p>There are 3 popular libraries to work on Web scraping with Python which are Selenium, Beautiful Soup, and Scrapy (How they’re different you can watch this <a href="https://www.youtube.com/watch?v=zucvHSQsKHA">youtube video</a>). This content I will show you how to work with Selenium and Beautiful Soup which is intuitive and easy to implement.</p>
+									
+                                    <h2>Prerequisites</h2>
+                                    
+                                    <ul>
+                                        <li>Install selenium and Beautiful Soup packages</li>
+                                        <pre>
+                                            <code>pip install selenium</br>pip install BeautifulSoup4</code>
+                                        </pre>
+                                        <li>Any text editor but I would recommend Jupiter notebook or google colab because It easier to debug</li>
+                                        <li>Selenium web driver. This is another one important thing because selenium required a web driver to create a new webpage that allows selenium to control. I will use Chrome driver for this tutorial. You can download Chrome driver here. **Before download Chrome driver please check your google chrome version whether it compatible with your Chrome version or not.</li>
+                                    </ul>
+                                    <div> 
+										<span><img src="images/webscrap/sc1.png" alt="" /></span>
+									</div> 
+                                </br>
+                                    <h2>Let's Start</h2>
+									<p>
+										I will scrape the whole reverb guitar search page source as an example.
+									</p>
+                                    <pre>
+                                        <code>from bs4 import BeautifulSoup</br>from selenium import webdriver</br>import time</br>driver = webdriver.Chrome('directory/to/web_driver')</br>driver.get("https://reverb.com/marketplace/electric-guitars?make=fender&page=1")</br>time.sleep(3)</br>html_source = driver.page_source</br>soup = BeautifulSoup(html_source,'lxml')</code>
+                                    </pre>
+									<p>
+										As you can see only 5 lines of code, We have a whole HTML page source from a specific URL. I will explain line by line from the above chunk of code. 
+									</p>
+
+									<p>
+										<b>1.Execute web driver (The one downloaded) and store to driver variable</b>
+                                    </p>
+                                    <pre><code>driver = webdriver.Chrome('directory/to/web_driver')</code></pre></br>
+                                    <p>
+										<b>2. Tell web driver to open URL</b>
+                                    </p>
+                                    <pre><code>driver.get("https://reverb.com/marketplace/electric-guitars?make=fender&page=1")</code></pre></br>
+                                    <p>
+										<b>3. This line is very important we need to set the sleep time and wait for the web page to fully loaded because It’s a Dynamic website or some call Client Side Rendered(CSR). You can read more about CSR and other types <a href="https://www.toptal.com/front-end/client-side-vs-server-side-pre-rendering">here</a>.</b>
+                                    </p>
+                                    <pre><code>time.sleep(3)</code></pre></br>
+                                    <p>
+										<b>4. Get page source</b>
+                                    </p>
+                                    <pre><code>html_source = driver.page_source</code></pre></br>
+                                    <p>
+										<b>5. Call Beautiful Soup and parse HTML source in any parse you want. You can finf parser options from Beautiful Soup documents <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">here</a>.</b>
+                                    </p>
+                                    <pre><code>soup = BeautifulSoup(html_source,'lxml')</code></pre></br>
+
+                                    <p>So yeah, That’s pretty much it. How to web scraping in a very simple way.</p>
+
+                                    <h3>Bonus</h3>
+                                    <p>
+                                        What if you want to know all the guitar products name and prices. Basically, After we scraped page source which means we have every information on that specific page. We can use Beautiful Soup to get those particular informations.
+                                    </p>
+                                    <p>
+                                        The concept is very easy. Search for tag, class, or id that store product name or whatever you want to know. (we will use those tag, class, or id as an arguments for Beautiful Soup). You can used inspect element feature in google chrome to find out what tag, class, or id by press cmd+opt+i in mac.
+                                    </p>
+
+                                    <h3>Product name</h3>
+
+                                    <p>
+                                        For product name after I inspected the HTML source, I found that product name is in ‘h4’ tag and class ‘grid-card__title’
+                                    </p>
+                                    <p>
+                                        I’ve already stored HTML source in soup variable so I can call a function call ‘find_all’ and pass 2 arguments the first one is tag name and class name to find a product name.
+                                    </p>
+                                    <pre><code>all_product_name = soup.find_all('h4', class_='grid-card__title')</code></pre></br>
+                                    <p>Here’s the result below, You can see that we have all specific h4 tag and class grid-card__title.</p>
+                                    <div> 
+										<span><img src="images/webscrap/sc2.png" alt="" /></span>
+									</div> 
+                                    <p>So what if we want only the text inside those tag ?? just use .text function and loop through this list.</p>
+                                    <pre><code>[i.text for i in all_product_name]</code></pre></br>
+
+                                    <p>BAM! We got what we want.</p>
+
+                                    <div> 
+										<span><img src="images/webscrap/sc3.png" alt="" /></span>
+                                    </div> 
+                                </br>
+                                    <h3>Conclusion</h3>
+                                    <p>
+                                        Scraping page source
+                                    </p>
+                                    <ul>
+                                        <li>Install Selenium</li>
+                                        <li>Install Beautiful Soup</li>
+                                        <li>Download web driver</li>
+                                        <li>Get specific information after scraped with Beautiful Soup</li>
+                                    </ul>
+                                    <p>And that’s all a basic of web scraping on dynamic website in just 5 lines of code. :)</p>
+
+									<p><b> Github : </b> <a href="https://github.com/erthh/Easy_webscraping">Source code</a> </p> 
+									<p><b> Github Gist : </b> <a href="https://gist.github.com/erthh/31c685ee7baabc72313a10eb224fa412">Source code</a> </p> 
+									
+									<hr class="major" />
+								</section>
+								<footer class="footerFix">
+									<div class="footerdiv">
+										<div class="footerdiv2">
+											<h3>
+												<a class="link"href="https://drive.google.com/open?id=12csDtaBPMCwQthPYRrCzBM3qqyRvbZIr">Resume</a> &nbsp; &nbsp; 
+												<a class="link" href="aboutme.html">Contact</a>
+											</h3>
+										</div>
+										<div class="footerdiv3">
+											<h3> &copy; 2020 Krittin Jaratmanachot.</h3>
+										</div>
+									</div>
+							</footer>
+						</div>
+					</div>
+			</div>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+	</body>
+</html>
